@@ -1,16 +1,8 @@
-"Coriolis toy"
+"jet"
 1 1 1 0 0 0
-"toy", 1, "seconds", 1, "days", "time"
-"ocean_model","PV","PV","toy","all",.false.,"none",1
-"ocean_model","RV","RV","toy","all",.false.,"none",1
-"ocean_model","uh","uh","toy","all",.false.,"none",1
-"ocean_model","vh","vh","toy","all",.false.,"none",1
-"ocean_model","h","h","toy","all",.false.,"none",1
-"ocean_model","u","u","toy","all",.false.,"none",1
-"ocean_model","v","v","toy","all",.false.,"none",1
-"ocean_model","CAu","CAu","toy","all",.false.,"none",1
-"ocean_model","CAv","CAv","toy","all",.false.,"none",1
-"ocean_model","gKEu","gKEu","toy","all",.false.,"none",1
-"ocean_model","gKEv","gKEv","toy","all",.false.,"none",1
-"ocean_model","rvxu","rvxu","toy","all",.false.,"none",1
-"ocean_model","rvxv","rvxv","toy","all",.false.,"none",1
+"snap", 1, "days", 1, "days", "time"
+"ocean_model","h","h","snap","all",.false.,"none",2
+"ocean_model","u","u","snap","all",.false.,"none",2
+"ocean_model","v","v","snap","all",.false.,"none",2
+"ocean_model","PV","PV","snap","all",.false.,"none",2
+"ocean_model","RV","RV","snap","all",.false.,"none",2
