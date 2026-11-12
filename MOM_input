@@ -16,18 +16,18 @@ ADIABATIC = True                !   [Boolean] default = False
 USE_POROUS_BARRIER = False      !   [Boolean] default = False
                                 ! If true, use porous barrier to constrain the widths and face areas at the
                                 ! edges of the grid cells.
-DT = 1.0
+DT = 100.0
                                 ! The (baroclinic) dynamics time step.  The time-step that
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
 
 ! === module MOM_domains ===
-NIGLOBAL = 8
+NIGLOBAL = 80
                                 ! The total number of thickness grid points in the
                                 ! x-direction in the physical domain. With STATIC_MEMORY_
                                 ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 8
+NJGLOBAL = 80
                                 ! The total number of thickness grid points in the
                                 ! y-direction in the physical domain. With STATIC_MEMORY_
                                 ! this is set in MOM_memory.h at compile time.
@@ -49,7 +49,7 @@ NK = 1                          !   [nondim]
 ! === module MOM_fixed_initialization ===
 
 ! === module MOM_grid_init ===
-GRID_CONFIG = "cartesian"       !
+GRID_CONFIG = "cartesian"
                                 ! A character string that determines the method for
                                 ! defining the horizontal grid.  Current options are:
                                 !     mosaic - read the grid from a mosaic (supergrid)
@@ -57,14 +57,14 @@ GRID_CONFIG = "cartesian"       !
                                 !     cartesian - use a (flat) Cartesian grid.
                                 !     spherical - use a simple spherical grid.
                                 !     mercator - use a Mercator spherical grid.
-SOUTHLAT = 0.0                  !   [degrees]
+SOUTHLAT = 0.0
                                 ! The southern latitude of the domain or the equivalent
                                 ! starting value for the y-axis.
-LENLAT = 80.0
+LENLAT = 2000.0
                                 ! The latitudinal or y-direction length of the domain.
-LENLON = 80.0
+LENLON = 2000.0
                                 ! The longitudinal or x-direction length of the domain.
-TOPO_CONFIG = "file"
+TOPO_CONFIG = "flat"            !
                                 ! This specifies how bathymetry is specified:
                                 !     file - read bathymetric information from the file
                                 !       specified by (TOPO_FILE).
@@ -85,7 +85,7 @@ TOPO_CONFIG = "file"
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     Phillips - ACC-like idealized topography used in the Phillips config.
                                 !     USER - call a user modified routine.
-MAXIMUM_DEPTH = 1200.0
+MAXIMUM_DEPTH = 1000.0
                                 ! The maximum depth of the ocean.
 
 ! === module MOM_open_boundary ===
@@ -114,7 +114,7 @@ COORD_CONFIG = "none"           !
 ! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
-THICKNESS_CONFIG = "thickness_file"
+THICKNESS_CONFIG = "uniform"    !
                                 ! A string that determines how the initial layer
                                 ! thicknesses are specified for a new run:
                                 !     file - read interface heights from the file specified
@@ -161,7 +161,7 @@ HBBL = 1.0                      !   [m]
                                 ! the thickness over which near-bottom velocities are
                                 ! averaged for the drag law if BOTTOMDRAGLAW is defined
                                 ! but LINEAR_DRAG is not.
-KV = 0.0
+KV = 1.0                        !   [m2 s-1]
                                 ! The background kinematic viscosity in the interior.
                                 ! The molecular value, ~1e-6 m2 s-1, may be used.
 
@@ -210,7 +210,7 @@ BUOY_CONFIG = "zero"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
                                 ! (linear), (USER), (BFB) and (NONE).
-WIND_CONFIG = "zero"            !
+WIND_CONFIG = "1gyre"
                                 ! The character string that indicates how wind forcing
                                 ! is specified. Valid options include (file), (2gyre),
                                 ! (1gyre), (gyres), (zero), and (USER).
@@ -222,12 +222,12 @@ WIND_CONFIG = "zero"            !
 ! === module MOM_write_cputime ===
 
 ! === module MOM_main (MOM_driver) ===
-DAYMAX = 1.0
+DAYMAX = 180
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is
                                 ! not set via ocean_solo_nml in input.nml.
-ENERGYSAVEDAYS = 1.0
+ENERGYSAVEDAYS = 5.0
 
 ! === module MOM_file_parser ===
 
@@ -240,23 +240,18 @@ GUST_CONST = 0.02               !   [Pa] default = 0.02
 FIX_USTAR_GUSTLESS_BUG = False  !   [Boolean] default = False
 
 
-! === Coriolis toy settings (decoding-om3, Phase 1) ===
-TIMEUNIT = 1.0
-DT_THERM = 1.0
+! === case settings (decoding-om3 Coriolis page; from exps/make_runs.py) ===
 AXIS_UNITS = "km"
-REENTRANT_X = True
-REENTRANT_Y = True
-ROTATION = "betaplane"
-F_0 = 1.0E-04
-BETA = 0.0
-TOPO_FILE = "topog.nc"
-TOPO_VARNAME = "depth"
-INPUTDIR = "INPUT"
-THICKNESS_FILE = "h_ic.nc"
-THICKNESS_IC_VAR = "h"
-VELOCITY_CONFIG = "uniform"
-INITIAL_U_CONST = 0.0
-INITIAL_V_CONST = 0.1
 BOUND_CORIOLIS = False
 CORIOLIS_EN_DIS = False
-CORIOLIS_SCHEME = "SADOURNY75_ENERGY"
+ROTATION = "betaplane"
+TAUX_MAGNITUDE = 0.1
+REENTRANT_X = False
+REENTRANT_Y = False
+LAPLACIAN = True
+KH = 8400.0
+BIHARMONIC = False
+NOSLIP = True
+F_0 = 0.0001
+BETA = 2e-11
+CORIOLIS_SCHEME = "SADOURNY75_ENSTRO"

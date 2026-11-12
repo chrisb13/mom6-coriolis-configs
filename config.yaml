@@ -1,14 +1,13 @@
-# Payu configuration: Coriolis-scheme toy (8x8, one layer, one 1 s step)
+# Payu configuration: Wind-driven gyre (rung 1): closed 2000 km basin, 25 km, one layer, beta-plane, 180 days.
 model: mom6
 exe: /g/data/vk83/apps/spack/1.1/release/linux-x86_64_v4/access-mom6-2026.05.003-ld7hklzo5ajizx5u4yl74i4ijberrpv6/bin/mom6-solo
-input: /g/data/tm70/cyb561/repos/claude/decodingmom6-coriolis/inputs/toy
 laboratory: /g/data/tm70/cyb561/repos/claude/decodingmom6-coriolis/lab
 queue: normalsr
 project: tm70
-ncpus: 1
-mem: 4GB
-walltime: 0:10:00
-jobname: cor-toy
+ncpus: 4
+mem: 16GB
+walltime: 1:00:00
+jobname: cor-gyre
 storage:
   gdata:
     - vk83
