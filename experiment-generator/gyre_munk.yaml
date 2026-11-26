@@ -1,0 +1,33 @@
+# Why is the gyre's boundary current wider than Munk's? One test per suspect, scheme fixed (SADOURNY75_ENSTRO).
+# Base: gyre-base (25 km, KH = 8400 m2/s -> delta_M = 75 km = 3 cells, TAUX 0.1 Pa, 180 days).
+#   munk-long      : 540 days (is 180 days steady?)          [control]
+#   munk-weakwind  : TAUX 0.01 Pa (inertia 10x smaller, near-linear)
+#   munk-fine      : 12.5 km grid, same KH (6 cells across delta_M)
+#   munk-bigvisc   : KH x8 = 67200 m2/s (delta_M = 150 km = 6 cells)
+model_type: mom6
+repository_url: git@github.com:chrisb13/mom6-coriolis-configs.git
+start_point: "6da4ead"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: coriolis_gyre_munk
+control_branch_name: munk-long
+
+Control_Experiment:
+  MOM_input:
+    DAYMAX: 540.0
+  config.yaml:
+    walltime: "2:00:00"
+
+Perturbation_Experiment:
+  munk_tests:
+    branches: [munk-weakwind, munk-fine, munk-bigvisc]
+    MOM_input:
+      DAYMAX: [180.0, 180.0, 180.0]
+      TAUX_MAGNITUDE: [0.01, 0.1, 0.1]
+      NIGLOBAL: [80, 160, 80]
+      NJGLOBAL: [80, 160, 80]
+      DT: [100.0, 50.0, 100.0]
+      KH: [8400.0, 8400.0, 67200.0]
+    config.yaml:
+      ncpus: [4, 16, 4]
+      mem: [16GB, 64GB, 16GB]
+      walltime: ["1:00:00", "3:00:00", "1:00:00"]

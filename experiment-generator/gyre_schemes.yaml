@@ -1,0 +1,24 @@
+# Rung 1, wind-driven gyre: 6 schemes on the beta-plane + no rotation + uniform rotation (decoding-om3 Coriolis page).
+# Base: gyre-base @ 765bf2d (KH = 67200, delta_M = 150 km; chosen by the Munk tests, sweeps/gyre_munk.yaml).
+model_type: mom6
+repository_url: git@github.com:chrisb13/mom6-coriolis-configs.git
+start_point: "4bf7dd0"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: coriolis_gyre3
+control_branch_name: gyre-enstro
+
+Control_Experiment:
+  MOM_input:
+    CORIOLIS_SCHEME: '"SADOURNY75_ENSTRO"'
+
+Perturbation_Experiment:
+  gyre_schemes:
+    branches: [gyre-energy, gyre-ah90, gyre-al81, gyre-alblend, gyre-robust]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"ARAKAWA_HSU90"', '"ARAKAWA_LAMB81"', '"ARAKAWA_LAMB_BLEND"', '"ROBUST_ENSTRO"']
+  gyre_rotation:
+    branches: [gyre-norot, gyre-fplane]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"SADOURNY75_ENERGY"']
+      F_0: [0.0, 0.0001]
+      BETA: [0.0, 0.0]

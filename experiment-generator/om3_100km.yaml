@@ -1,0 +1,18 @@
+# Top rung: global ACCESS-OM3 at 100 km, RYF (dev-MC_100km_jra_ryf @ 6130fff), 5 years from rest per scheme.
+#   control  om3-enstro : as configured (SADOURNY75_ENSTRO + BOUND_CORIOLIS = True)
+#   om3-energy, om3-ah90: CORIOLIS_SCHEME changed, everything else identical
+# Run 5 years: payu run -n 5 in each worktree (restart_freq 1YS, one year per payu run).
+model_type: access-om3
+repository_url: https://github.com/ACCESS-NRI/access-om3-configs.git
+start_point: "6130fff4d525e4d92660abc4e16cc73f845c3aab"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: om3_100km
+control_branch_name: om3-enstro
+
+Control_Experiment: {}
+
+Perturbation_Experiment:
+  om3_schemes:
+    branches: [om3-energy, om3-ah90]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"ARAKAWA_HSU90"']

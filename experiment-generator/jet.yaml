@@ -1,0 +1,33 @@
+# Main experiment, Phillips jet: version A (10 km), B (40 km), and A with the fast solver (SPLIT) on.
+# Base: jet-base of the local config repo. Reproduces runs/exp2/jet{A,B,S}/* (stopgap) as generator branches.
+model_type: mom6
+repository_url: git@github.com:chrisb13/mom6-coriolis-configs.git
+start_point: "1946ba7"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: coriolis_jet
+control_branch_name: jetA-energy
+
+Control_Experiment:
+  MOM_input:
+    CORIOLIS_SCHEME: '"SADOURNY75_ENERGY"'
+
+Perturbation_Experiment:
+  jetA_schemes:
+    branches: [jetA-enstro, jetA-ah90, jetA-al81, jetA-alblend, jetA-robust]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENSTRO"', '"ARAKAWA_HSU90"', '"ARAKAWA_LAMB81"', '"ARAKAWA_LAMB_BLEND"', '"ROBUST_ENSTRO"']
+  jetB_schemes:
+    branches: [jetB-energy, jetB-enstro, jetB-ah90, jetB-al81, jetB-alblend, jetB-robust]
+    MOM_input:
+      NIGLOBAL: [16, 16, 16, 16, 16, 16]
+      NJGLOBAL: [16, 16, 16, 16, 16, 16]
+      DT: [160.0, 160.0, 160.0, 160.0, 160.0, 160.0]
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"SADOURNY75_ENSTRO"', '"ARAKAWA_HSU90"', '"ARAKAWA_LAMB81"', '"ARAKAWA_LAMB_BLEND"', '"ROBUST_ENSTRO"']
+  jetS_split:
+    branches: [jetS-energy, jetS-enstro, jetS-ah90, jetS-al81, jetS-alblend, jetS-robust, jetS-enstro-sadourny-flip, jetS-om3like]
+    MOM_input:
+      SPLIT: [True, True, True, True, True, True, True, True]
+      DT: [600.0, 600.0, 600.0, 600.0, 600.0, 600.0, 600.0, 600.0]
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"SADOURNY75_ENSTRO"', '"ARAKAWA_HSU90"', '"ARAKAWA_LAMB81"', '"ARAKAWA_LAMB_BLEND"', '"ROBUST_ENSTRO"', '"SADOURNY75_ENSTRO"', '"SADOURNY75_ENSTRO"']
+      SADOURNY: [True, True, True, True, True, True, False, True]
+      BOUND_CORIOLIS: [False, False, False, False, False, False, False, True]

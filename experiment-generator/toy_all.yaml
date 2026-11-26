@@ -1,0 +1,24 @@
+# Tiny-ocean toy: one 1 s step per CORIOLIS_SCHEME, all nine options in the pinned MOM6 (decoding-om3 Coriolis page).
+# Replaces toy_schemes.yaml (six schemes) + the three hand-built WENO runs of 18 Nov: Chris asked that every toy run come
+# from the Experiment Generator in one go.
+# Base case: commit e176eb7 of the local config repo (Payu, mom6-solo from access-om3/2026.05.004).
+# Run:  qsub -v YAML=$PWD/toy_all.yaml,NAME=coriolis_toy9 gen_and_run.pbs   (copyq; payu then submits the model jobs)
+model_type: mom6
+repository_url: git@github.com:chrisb13/mom6-coriolis-configs.git
+start_point: "bc3487d"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: coriolis_toy9
+control_branch_name: toy-energy
+
+Control_Experiment:
+  MOM_input:
+    CORIOLIS_SCHEME: '"SADOURNY75_ENERGY"'
+    BOUND_CORIOLIS: False
+    SPLIT: False
+
+Perturbation_Experiment:
+  toy_schemes:
+    branches: [toy-enstro, toy-ah90, toy-al81, toy-alblend, toy-robust, toy-weno3, toy-weno5, toy-weno7]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENSTRO"', '"ARAKAWA_HSU90"', '"ARAKAWA_LAMB81"', '"ARAKAWA_LAMB_BLEND"',
+                        '"ROBUST_ENSTRO"', '"WENOVI3RD_PV_ENSTRO"', '"WENOVI5TH_PV_ENSTRO"', '"WENOVI7TH_PV_ENSTRO"']

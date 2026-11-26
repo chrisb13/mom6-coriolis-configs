@@ -1,0 +1,20 @@
+# Is the wider-than-Munk current due to bottom friction? With BOTTOMDRAGLAW = False and KV = 1 m2/s the single layer feels
+# viscous drag against a no-slip bottom: r ~ 2 KV / h^2 ~ 2e-6 1/s, a Stommel width r/beta ~ 100 km, comparable to delta_M.
+# Same as gyre-base (enstro) but KV tiny, at both viscosities.
+model_type: mom6
+repository_url: git@github.com:chrisb13/mom6-coriolis-configs.git
+start_point: "4bf7dd0"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: coriolis_gyre_nodrag
+control_branch_name: nodrag-kh67200
+
+Control_Experiment:
+  MOM_input:
+    KV: 1.0E-06
+
+Perturbation_Experiment:
+  nodrag_kh:
+    branches: [nodrag-kh8400]
+    MOM_input:
+      KV: [1.0E-06]
+      KH: [8400.0]
