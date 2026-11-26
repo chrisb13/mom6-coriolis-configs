@@ -1,0 +1,30 @@
+# ANU-TUB, stage 1 of 2: spin-up (decoding-om3 page "Coriolis in MOM6", eddying test).
+# Upstream: ACCESS-Community-Hub/anu-tub @ e413708: 0.25 deg Mercator sector, 75 z* levels (MOM_override is a symlink
+# to zstar/MOM_override), SADOURNY75_ENSTRO + BOUND_CORIOLIS as in ACCESS-OM3. Nothing in the ocean model is changed here:
+# only the executable (the ACCESS-OM3 release instead of the pre-release upstream names) and run bookkeeping.
+#
+# Inputs (topog.nc, forcing.nc, sst.nc) are not stored in git: make them with the notebook in the branch's ./input
+# (input/mom6-anu-tub-driver.ipynb), or point `input:` at existing copies.
+# The page's runs: 5 model years from rest (one ~7 h job on 312 cores, ~4.2k SU), then stage 2 (anu_tub_branches.yaml)
+# from the end-of-year-5 restart (restart004).
+#
+# Run:  qsub -P <project> -v YAML=$PWD/anu_tub_spinup.yaml,NAME=anu_tub,NRUNS=1 pbs/gen_and_run.pbs
+#       (runspersub 5 below: the single payu job runs all five years)
+model_type: mom6
+repository_url: https://github.com/ACCESS-Community-Hub/anu-tub.git
+start_point: "e413708"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: anu_tub
+control_branch_name: tub-spinup
+
+Control_Experiment:
+  config.yaml:
+    modules:
+      use: [/g/data/vk83/modules]
+      load: [access-om3/2026.05.004]
+    experiment: tub-spinup
+    runspersub: 5
+    walltime: "12:00:00"
+    manifest:
+      reproduce:
+        exe: false   # manifests/exe.yaml records the pre-release executable; we use the release

@@ -1,0 +1,41 @@
+# ANU-TUB, stage 2 of 2: scheme branches from the end of the 5-year spin-up (anu_tub_spinup.yaml).
+#   tub-enstro       control: unchanged (SADOURNY75_ENSTRO + BOUND_CORIOLIS)
+#   tub-energy       CORIOLIS_SCHEME = SADOURNY75_ENERGY, nothing else changed
+#   tub-enstro-pert  the control from a restart whose temperature carries N(0, 1e-6 degC) noise: the noise floor
+# The page's runs: 3 years each (model years 6-8), one payu job per branch.
+#
+# Before generating:
+#   1. RESTART_DIR below = <laboratory>/archive/tub-spinup/restart004
+#   2. make the perturbed restart (seed 17112026, as on the page):
+#        python scripts/perturb_restart.py <RESTART_DIR> <PERT_DIR>
+#      and set PERT_DIR below.
+# Run:  qsub -P <project> -v YAML=$PWD/anu_tub_branches.yaml,NAME=anu_tub_branches,NRUNS=1 pbs/gen_and_run.pbs
+# (The page's ENERGY run set the scheme with a MOM_override line; setting it in MOM_input gives the same parameter.)
+model_type: mom6
+repository_url: https://github.com/ACCESS-Community-Hub/anu-tub.git
+start_point: "e413708"
+test_path: EDIT_ME   # a directory of your own, e.g. /g/data/<project>/$USER/coriolis-experiments
+repository_directory: anu_tub_branches
+control_branch_name: tub-enstro
+
+Control_Experiment:
+  config.yaml:
+    modules:
+      use: [/g/data/vk83/modules]
+      load: [access-om3/2026.05.004]
+    experiment: tub-enstro
+    runspersub: 3
+    walltime: "08:00:00"
+    restart: RESTART_DIR
+    manifest:
+      reproduce:
+        exe: false
+
+Perturbation_Experiment:
+  tub_schemes:
+    branches: [tub-energy, tub-enstro-pert]
+    MOM_input:
+      CORIOLIS_SCHEME: ['"SADOURNY75_ENERGY"', '"SADOURNY75_ENSTRO"']
+    config.yaml:
+      experiment: [tub-energy, tub-enstro-pert]
+      restart: [RESTART_DIR, PERT_DIR]

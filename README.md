@@ -12,11 +12,12 @@ it matter?). Each config branch is one runnable payu configuration; the scheme t
 | `gyre` (4bf7dd0) | wind-driven single gyre, 25 km, 180 days | §4 warm-up | `gyre_schemes.yaml`, `gyre_nodrag.yaml`, `gyre_munk.yaml` |
 | `jet` (1946ba7) | Phillips two-layer jet, 10 / 40 km, 400 days | §5 main experiment | `jet.yaml` |
 | ACCESS-NRI/access-om3-configs `dev-MC_100km_jra_ryf` @ 6130fff | global ACCESS-OM3, 100 km, RYF | §6 planet | `om3_100km.yaml` |
-| ACCESS-Community-Hub/anu-tub @ e413708 | idealised 0.25° sector ocean | §6 eddies | to come (scripted set-up) |
+| ACCESS-Community-Hub/anu-tub @ e413708 | idealised 0.25° sector ocean, 5-yr spin-up then branches | §6 eddies | `anu_tub_spinup.yaml`, then `anu_tub_branches.yaml` (+ `scripts/perturb_restart.py`) |
 | Tasman Sea regional 1/4°, 1/10°, 1/20° | regional ACCESS-OM3, RYF | to come | to come; inputs are generated, not stored |
 
 Configurations that already exist elsewhere (100 km, ANU-TUB) are not copied here: the sweep branches from the
-upstream repository at a fixed commit and changes only the Coriolis settings.
+upstream repository at a fixed commit and changes only the Coriolis settings (plus, for ANU-TUB, the executable and
+run bookkeeping). Runs that branch from a spun-up state take the restart directory as a placeholder in the YAML.
 
 ## How to reproduce a sweep
 
