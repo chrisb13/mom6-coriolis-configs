@@ -32,6 +32,11 @@ qsub -v YAML=$PWD/jet.yaml,NAME=coriolis_jet pbs/gen_and_run.pbs
 ```
 Add `NRUNS=<n>` to run n segments per branch (the 100 km runs used NRUNS=2).
 
+**Laboratory.** payu uses its default laboratory, `/scratch/$PROJECT/$USER/<model>` (archive, work and `input/`),
+unless the config's `config.yaml` sets `laboratory:`. Inputs given as relative paths are looked up under its `input/`.
+To use another laboratory, commit a `laboratory:` line on the config branch first: the Experiment Generator's
+`lab_path` option is applied when it clones but not when it re-checks out the control branch (generator 8cbec23).
+
 Executable for the MOM6-only cases: `mom6-solo` from `access-om3/2026.05.004` (MOM6 `d11a149`), `normalsr` queue.
 
 Written with Claude Code; hosted on a personal account for now (to move to ACCESS-Community-Hub later).

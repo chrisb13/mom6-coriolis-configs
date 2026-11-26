@@ -3,8 +3,9 @@
 # to zstar/MOM_override), SADOURNY75_ENSTRO + BOUND_CORIOLIS as in ACCESS-OM3. Nothing in the ocean model is changed here:
 # only the executable (the ACCESS-OM3 release instead of the pre-release upstream names) and run bookkeeping.
 #
-# Inputs (topog.nc, forcing.nc, sst.nc) are not stored in git: make them with the notebook in the branch's ./input
-# (input/mom6-anu-tub-driver.ipynb), or point `input:` at existing copies.
+# Inputs (topog.nc, forcing.nc, sst.nc) are not stored in git: make them with upstream's notebook
+# input/mom6-anu-tub-driver.ipynb. The config lists them as ./input/<file>, which payu looks up under the laboratory,
+# so put them in <laboratory>/input/input/ BEFORE generating (payu checks they exist when it clones).
 # The page's runs: 5 model years from rest (one ~7 h job on 312 cores, ~4.2k SU), then stage 2 (anu_tub_branches.yaml)
 # from the end-of-year-5 restart (restart004).
 #

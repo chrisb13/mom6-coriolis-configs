@@ -7,7 +7,8 @@
 #PBS -l ncpus=1
 #PBS -l mem=4GB
 #PBS -l walltime=01:00:00
-#PBS -l storage=gdata/vk83   # add your own gdata/<project>
+#PBS -l storage=gdata/vk83
+# (add +gdata/<project> to the storage line above for your own /g/data paths)
 #PBS -l wd
 #PBS -j oe
 set -e
