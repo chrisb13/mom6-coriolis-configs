@@ -22,6 +22,8 @@ cd "$(dirname "$YAML")"
 git -C "$E/$NAME" checkout -q main   # generator leaves the repo on its last branch, which blocks a worktree for it
 for b in $(git -C "$E/$NAME" for-each-ref --format='%(refname:short)' refs/heads | grep -v '^main$'); do
   echo "== $b"
+  # only run branches the generator made: skip any that also exist in the source repository (e.g. toy-8x8 itself)
+  git -C "$E/$NAME" show-ref -q --verify "refs/remotes/origin/$b" && { echo "   source branch, skipped"; continue; }
   [ -d "$E/wt/$b/$NAME" ] && continue   # already has a worktree, so payu run was already submitted
   git -C "$E/$NAME" worktree add "$E/wt/$b/$NAME" "$b"
   cd "$E/wt/$b/$NAME"; payu run -n ${NRUNS:-1}; cd - >/dev/null
