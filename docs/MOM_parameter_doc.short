@@ -1,0 +1,214 @@
+! This file was written by the model and records the non-default parameters used at run-time.
+
+! === module MOM ===
+SPLIT = False                   !   [Boolean] default = True
+                                ! Use the split time stepping if true.
+ENABLE_THERMODYNAMICS = False   !   [Boolean] default = True
+                                ! If true, Temperature and salinity are used as state variables.
+ADIABATIC = True                !   [Boolean] default = False
+                                ! There are no diapycnal mass fluxes if ADIABATIC is true.  This assumes that KD
+                                ! = 0.0 and that there is no buoyancy forcing, but makes the model faster by
+                                ! eliminating subroutine calls.
+DT = 100.0                      !   [s]
+                                ! The (baroclinic) dynamics time step.  The time-step that is actually used will
+                                ! be an integer fraction of the forcing time-step (DT_FORCING in ocean-only mode
+                                ! or the coupling timestep in coupled mode.)
+
+! === module MOM_domains ===
+REENTRANT_X = False             !   [Boolean] default = True
+                                ! If true, the domain is zonally reentrant.
+NIGLOBAL = 80                   !
+                                ! The total number of thickness grid points in the x-direction in the physical
+                                ! domain. With STATIC_MEMORY_ this is set in MOM_memory.h at compile time.
+NJGLOBAL = 80                   !
+                                ! The total number of thickness grid points in the y-direction in the physical
+                                ! domain. With STATIC_MEMORY_ this is set in MOM_memory.h at compile time.
+
+! === module MOM_fixed_initialization ===
+
+! === module MOM_grid_init ===
+GRID_CONFIG = "cartesian"       !
+                                ! A character string that determines the method for defining the horizontal
+                                ! grid.  Current options are:
+                                !     mosaic - read the grid from a mosaic (supergrid)
+                                !              file set by GRID_FILE.
+                                !     cartesian - use a (flat) Cartesian grid.
+                                !     spherical - use a simple spherical grid.
+                                !     mercator - use a Mercator spherical grid.
+AXIS_UNITS = "km"               ! default = "degrees"
+                                ! The units for the Cartesian axes. Valid entries are:
+                                !     degrees - degrees of latitude and longitude
+                                !     m or meter(s) - meters
+                                !     k or km or kilometer(s) - kilometers
+SOUTHLAT = 0.0                  !   [km]
+                                ! The southern latitude of the domain or the equivalent starting value for the
+                                ! y-axis.
+LENLAT = 2000.0                 !   [km]
+                                ! The latitudinal or y-direction length of the domain.
+LENLON = 2000.0                 !   [km]
+                                ! The longitudinal or x-direction length of the domain.
+TOPO_CONFIG = "flat"            !
+                                ! This specifies how bathymetry is specified:
+                                !     file - read bathymetric information from the file
+                                !       specified by (TOPO_FILE).
+                                !     flat - flat bottom set to MAXIMUM_DEPTH.
+                                !     bowl - an analytically specified bowl-shaped basin
+                                !       ranging between MAXIMUM_DEPTH and MINIMUM_DEPTH.
+                                !     spoon - a similar shape to 'bowl', but with an vertical
+                                !       wall at the southern face.
+                                !     halfpipe - a zonally uniform channel with a half-sine
+                                !       profile in the meridional direction.
+                                !     bbuilder - build topography from list of functions.
+                                !     benchmark - use the benchmark test case topography.
+                                !     Neverworld - use the Neverworld test case topography.
+                                !     DOME - use a slope and channel configuration for the
+                                !       DOME sill-overflow test case.
+                                !     ISOMIP - use a slope and channel configuration for the
+                                !       ISOMIP test case.
+                                !     DOME2D - use a shelf and slope configuration for the
+                                !       DOME2D gravity current/overflow test case.
+                                !     Kelvin - flat but with rotated land mask.
+                                !     seamount - Gaussian bump for spontaneous motion test case.
+                                !     dumbbell - Sloshing channel with reservoirs on both ends.
+                                !     shelfwave - exponential slope for shelfwave test case.
+                                !     Phillips - ACC-like idealized topography used in the Phillips config.
+                                !     dense - Denmark Strait-like dense water formation and overflow.
+                                !     USER - call a user modified routine.
+MAXIMUM_DEPTH = 1000.0          !   [m]
+                                ! The maximum depth of the ocean.
+ROTATION = "betaplane"          ! default = "2omegasinlat"
+                                ! This specifies how the Coriolis parameter is specified:
+                                !     2omegasinlat - Use twice the planetary rotation rate
+                                !       times the sine of latitude.
+                                !     betaplane - Use a beta-plane or f-plane.
+                                !     USER - call a user modified routine.
+F_0 = 1.0E-04                   !   [s-1] default = 0.0
+                                ! The reference value of the Coriolis parameter with the betaplane option.
+BETA = 2.0E-11                  !   [m-1 s-1] default = 0.0
+                                ! The northward gradient of the Coriolis parameter with the betaplane option.
+GRID_ROTATION_ANGLE_BUGS = True !   [Boolean] default = False
+                                ! If true, use an older algorithm to calculate the sine and cosines needed
+                                ! rotate between grid-oriented directions and true north and east.  Differences
+                                ! arise at the tripolar fold.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+NK = 1                          !   [nondim]
+                                ! The number of model layers.
+
+! === module MOM_tracer_flow_control ===
+
+! === module MOM_coord_initialization ===
+
+! === module MOM_state_initialization ===
+
+! === module MOM_diag_mediator ===
+
+! === module MOM_lateral_mixing_coeffs ===
+
+! === module MOM_set_visc ===
+BOTTOMDRAGLAW = False           !   [Boolean] default = True
+                                ! If true, the bottom stress is calculated with a drag law of the form
+                                ! c_drag*|u|*u. The velocity magnitude may be an assumed value or it may be
+                                ! based on the actual velocity in the bottommost HBBL, depending on LINEAR_DRAG.
+HBBL = 1.0                      !   [m]
+                                ! The thickness of a bottom boundary layer with a viscosity increased by
+                                ! KV_EXTRA_BBL if BOTTOMDRAGLAW is not defined, or the thickness over which
+                                ! near-bottom velocities are averaged for the drag law if BOTTOMDRAGLAW is
+                                ! defined but LINEAR_DRAG is not.
+KV = 1.0                        !   [m2 s-1]
+                                ! The background kinematic viscosity in the interior. The molecular value, ~1e-6
+                                ! m2 s-1, may be used.
+
+! === module MOM_thickness_diffuse ===
+USE_GM_WORK_BUG = True          !   [Boolean] default = False
+                                ! If true, compute the top-layer work tendency on the u-grid with the incorrect
+                                ! sign, for legacy reproducibility.
+
+! === module MOM_dynamics_unsplit ===
+
+! === module MOM_continuity_PPM ===
+SIMPLE_2ND_PPM_CONTINUITY = True !   [Boolean] default = False
+                                ! If true, CONTINUITY_PPM uses a simple 2nd order (arithmetic mean)
+                                ! interpolation of the edge values. This may give better PV conservation
+                                ! properties. While it formally reduces the accuracy of the continuity solver
+                                ! itself in the strongly advective limit, it does not reduce the overall order
+                                ! of accuracy of the dynamic core.
+
+! === module MOM_CoriolisAdv ===
+NOSLIP = True                   !   [Boolean] default = False
+                                ! If true, no slip boundary conditions are used; otherwise free slip boundary
+                                ! conditions are assumed. The implementation of the free slip BCs on a C-grid is
+                                ! much cleaner than the no slip BCs. The use of free slip BCs is strongly
+                                ! encouraged, and no slip BCs are not used with the biharmonic viscosity.
+CORIOLIS_SCHEME = "SADOURNY75_ENSTRO" ! default = "SADOURNY75_ENERGY"
+                                ! CORIOLIS_SCHEME selects the discretization for the Coriolis terms. Valid
+                                ! values are:
+                                !    SADOURNY75_ENERGY - Sadourny, 1975; energy cons.
+                                !    ARAKAWA_HSU90     - Arakawa & Hsu, 1990
+                                !    SADOURNY75_ENSTRO - Sadourny, 1975; enstrophy cons.
+                                !    ARAKAWA_LAMB81    - Arakawa & Lamb, 1981; En. + Enst.
+                                !    ARAKAWA_LAMB_BLEND - A blend of Arakawa & Lamb with
+                                !                         Arakawa & Hsu and Sadourny energy
+                                !    WENOVI5TH_PV_ENSTRO   - 5th-order WENO PV enstrophy
+                                !    WENOVI3RD_PV_ENSTRO   - 3rd-order WENO PV enstrophy
+                                !    WENOVI7TH_PV_ENSTRO  - 7th-order WENO PV enstrophy
+
+! === module MOM_PressureForce ===
+
+! === module MOM_PressureForce_FV ===
+
+! === module MOM_Zanna_Bolton ===
+
+! === module MOM_hor_visc ===
+LAPLACIAN = True                !   [Boolean] default = False
+                                ! If true, use a Laplacian horizontal viscosity.
+KH = 6.72E+04                   !   [m2 s-1] default = 0.0
+                                ! The background Laplacian horizontal viscosity.
+BIHARMONIC = False              !   [Boolean] default = True
+                                ! If true, use a biharmonic horizontal viscosity. BIHARMONIC may be used with
+                                ! LAPLACIAN.
+USE_LAND_MASK_FOR_HVISC = False !   [Boolean] default = True
+                                ! If true, use the land mask for the computation of thicknesses at velocity
+                                ! locations. This eliminates the dependence on arbitrary values over land or
+                                ! outside of the domain.
+
+! === module MOM_vert_friction ===
+HMIX_FIXED = 1.0                !   [m]
+                                ! The prescribed depth over which the near-surface viscosity and diffusivity are
+                                ! elevated when the bulk mixed layer is not used.
+
+! === module MOM_diagnostics ===
+
+! === module MOM_diabatic_driver ===
+! The following parameters are used for diabatic processes.
+
+! === module MOM_tracer_advect ===
+
+! === module MOM_tracer_hor_diff ===
+
+! === module MOM_sum_output ===
+ENERGYSAVEDAYS = 5.0            !   [days] default = 1.0
+                                ! The interval in units of TIMEUNIT between saves of the energies of the run and
+                                ! other globally summed diagnostics.
+
+! === module ocean_stochastics_init ===
+
+! === module MOM_surface_forcing ===
+WIND_CONFIG = "1gyre"           ! default = "zero"
+                                ! The character string that indicates how wind forcing is specified.  Valid
+                                ! options include (file), (data_override), (2gyre), (1gyre), (gyres), (zero),
+                                ! (const), (Neverworld), (scurves), (ideal_hurr), (SCM_CVmix_tests) and (USER).
+TAUX_MAGNITUDE = 0.1            !   [Pa] default = -0.2
+                                ! The peak zonal wind stress when WIND_CONFIG = 1gyre.
+GUST_CONST = 0.02               !   [Pa] default = 0.0
+                                ! The background gustiness in the winds.
+USTAR_GUSTLESS_BUG = True       !   [Boolean] default = False
+                                ! If true include a bug in the time-averaging of the gustless wind friction
+                                ! velocity
+
+! === module MOM_main (MOM_driver) ===
+DAYMAX = 180.0                  !   [days]
+                                ! The final time of the whole simulation, in units of TIMEUNIT seconds.  This
+                                ! also sets the potential end time of the present run segment if the end time is
+                                ! not set via ocean_solo_nml in input.nml.
